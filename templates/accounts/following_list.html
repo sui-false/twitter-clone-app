@@ -1,0 +1,13 @@
+{% extends '../base.html' %}
+
+{% block content %}
+<h1>フォロー一覧</h1>
+
+{% for following in my_followings %}
+
+<a href="{% url 'accounts:unfollow' following.following %}">{{ following.following }}</a><br>
+{% endfor %}
+<a href="{% url 'accounts:home' %}">戻る</a>
+
+
+{% endblock %}

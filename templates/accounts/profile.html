@@ -1,0 +1,26 @@
+{% extends '../base.html' %}
+
+{% block title %}プロフィール{% endblock %}
+
+{% block content %}
+{{profile.username}}さんのプロフィール
+<p>フォロー：<a href="{% url 'accounts:following_list' profile.username %}">{{ followings_num }}</a> / フォロワー：<a
+                href="{% url 'accounts:follower_list' profile.username %}">{{ followers_num }}</a></p>
+
+{% if profile.username == user.username %}
+<p>自分のプロフィール画面</p>
+{% elif connected %}
+<a href="{% url 'accounts:unfollow' profile.username %}">フォロー解除</a>
+{% else %}
+<a href="{% url 'accounts:follow' profile.username %}">フォロー</a>
+{% endif %}
+<hr>
+<a href="{% url 'accounts:home' %}">戻る</a>
+
+
+{% for tweet in tweets %}
+<p>{{ tweet.user }} / {{ tweet.created_at }}</p>
+<p>{{ tweet.content }}</p>
+<a href="{% url 'tweets:detail' tweet.pk %}">詳細</a>
+{% endfor %}
+{% endblock %}

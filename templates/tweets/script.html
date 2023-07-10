@@ -1,0 +1,74 @@
+<script type="text/javascript">
+    // csrf対策用のもの
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    const changeStyles = (jsonResponse, el) => {
+        let is_liked = el.dataset.isLiked
+
+        if (is_liked == "false") {
+            el.dataset.isLiked = "true"
+            el.innerHTML = `<i class="fa fa-heart" aria-hidden="false" style="color:red"></i>`;
+
+        } else {
+            el.dataset.isLiked = "false"
+            el.innerHTML = '<i class="fa fa-heart-o" aria-hidden="true"></i>';
+        }
+
+        const counts = document.getElementsByName(jsonResponse.tweet_pk + "_count")
+        counts[0].textContent = jsonResponse.like_count + "件のいいね";
+    }
+
+    //クリック時の処理
+    async function likeButtonClicked(event) { //awaitを使うにはfunctionの前にasyncが必要 
+        event.preventDefault()
+
+        // 以下、実際にいいねする投稿をとってきて、現時点でいいねしているかを判定
+        const element = event.currentTarget;
+        let is_liked = element.dataset.isLiked
+        let tweet_pk = element.dataset.tweetId
+
+        if (is_liked == 'true') {
+            url = "{% url 'tweets:unlike' pk=0 %}".replace('0', tweet_pk)
+        } else {
+            url = "{% url 'tweets:like' pk=0 %}".replace('0', tweet_pk)
+        }
+        // 以下、投稿の形式
+        const postData = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken,
+            },
+        };
+
+        const response = await fetch(url, postData)
+
+        // awaitで値が与えられるまで待つ。値がない状態だとエラーが出る
+        const json = await response.json();//json形式に変換
+        await changeStyles(json, element)
+
+    };
+
+    const likeButtonslist = document.querySelectorAll('[data-button="like"]');
+    likeButtonslist.forEach(likeButton => {
+
+        likeButton.addEventListener("click", likeButtonClicked);
+    })
+
+
+</script>

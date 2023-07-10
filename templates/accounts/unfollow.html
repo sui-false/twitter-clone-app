@@ -1,0 +1,23 @@
+{% extends '../base.html' %}
+
+{% block content %}
+<h3>フォロー解除確認画面</h3>
+<p>{{username}}のフォローを解除しますか？</p>
+<form method="post">
+    {%csrf_token%}
+    <input type="submit" value="フォロー解除">
+</form>
+
+{% if messages %}
+<ul class="messages">
+    {%for message in messages %}
+    <li {%if messages.tags %} class="{{messages.tags}}" }{% endif %}>
+        {% if messag.level == DEFAULT_MESSAGES_LEVELS.EROOR %}Important: {% endif %}
+        {{messages}}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<a href="{% url 'accounts:home' %}">キャンセル</a>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+<form class="like">
+        {% csrf_token %}
+        {% if tweet.id in liked_list%}
+        <!-- すでにいいねしたリストに入っていればいいね取り消し fas クラス-->
+        <button id="like" name="{{tweet.id}}" data-button="like" data-tweet-id="{{tweet.id}}"
+                data-url="{% url 'tweets:unlike' tweet.id %}" data-is-liked="true">
+                <i class="fas fa fa-heart" aria-hidden="false" style="color:red"></i>
+        </button>
+        {% else %}
+        <!-- 入っていなければいいねを表示 farクラス-->
+        <button id="like" name="{{tweet.id}}" data-button="like" data-tweet-id="{{tweet.id}}"
+                data-url="{% url 'tweets:like' tweet.id %}" data-is-liked="false">
+                <i class="far fa fa-heart-o" aria-hidden="true"></i>
+        </button>
+
+        {% endif %}
+</form>
+<small id="{{tweet.id}}-count" name="{{tweet.id}}_count">{{ tweet.like_set.count }}件のいいね</small>

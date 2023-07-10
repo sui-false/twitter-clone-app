@@ -1,0 +1,14 @@
+{% extends "../base.html" %}
+{% block title %}tweet詳細{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'accounts:user_profile' tweet.user.pk %} ">{{ tweet.user.username }} </a>: {{tweet.created_at}}</p>
+<!-- なぜusernameはuserが必要？？ -->
+<p>{{ tweet.content }}</p>
+{% include 'tweets/like.html' %}
+{% if request.user == tweet.user %}
+<a href="{% url 'tweets:delete' tweet.pk %}">削除する</a>
+{% endif %}
+<a href="{% url 'accounts:home' %}">戻る</a>
+{% include 'tweets/script.html' %}
+{% endblock %}

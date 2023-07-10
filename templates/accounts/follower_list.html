@@ -1,0 +1,19 @@
+{% extends '../base.html' %}
+
+{% block title %}フォロワー一覧{% endblock %}
+
+{% block content %}
+<h1>フォロワー一覧</h1>
+
+<body>
+    {% for follower in my_followers %}
+    <!-- followersはviewのctxからとってきていて、一件一件をfollowerにして表示している -->
+
+
+    <a href="{% url 'accounts:user_profile' follower.follower.pk %}">{{ follower.follower }}</a><br>
+    {% endfor %}
+
+    <a href="{% url 'accounts:home' %}">戻る</a>
+
+</body>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "../base.html" %}
+{% block title %}tweet削除{% endblock %}
+
+{% block content %}
+<h3>ツイート削除　確認画面</h3>
+<form method="post">
+    {% csrf_token %}
+    <p>{{ tweet.user.username }}</p>
+    <p>{{tweet.content}}</p>
+    <p>を削除しますか？</p>
+    <input type="submit" value="削除する">
+</form>
+<a href="{% url 'tweets:detail' tweet.pk %}">キャンセル</a>
+{% endblock %}

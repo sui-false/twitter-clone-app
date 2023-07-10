@@ -1,0 +1,21 @@
+{% extends '../base.html' %}
+
+{% block title %}フォロー{% endblock %}
+
+{% block content %}
+
+<h3>フォロー確認画面</h3>
+<p>{{username}}をフォローしますか？</p>
+<form method="post">
+    {%csrf_token %}
+    <input type="submit" value="フォロー">
+</form>
+{% if messages %}
+<ul class="messages">
+    {%for message in messages %}
+    <li {%if messages.tags %} class="{{messages.tags}}" }{% endif %}>
+        {% endfor %}
+</ul>
+{% endif %}
+<a href="{% url 'accounts:home' %}">戻る</a>
+{% endblock %}

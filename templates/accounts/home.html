@@ -1,0 +1,24 @@
+{% extends '../base.html' %}
+
+{% block title %}ホーム{% endblock %}
+
+{% block content %}
+<ul class="menu">
+    <li><a class="btn" href="{% url 'tweets:create' %}">Tweet</a></li>
+    <li><a href="{% url 'accounts:following_list' user.username %}">Following list</a></li>
+    <li><a href="{% url 'accounts:follower_list' user.username %}">Follower list</a></li>
+</ul>
+
+<a href="{% url 'tweets:create' %}">ツイートする</a>
+{% for tweet in tweets %}
+<div class="tweet_block">
+    <p> {{ tweet.content}}</p>
+    <small>{{ tweet.created_at }} tweeted by
+        {{tweet.user.username}}</small>
+    {% include 'tweets/like.html' %}
+    <a href="{% url 'tweets:detail' tweet.pk %}">ツイートを見る</a>
+    <hr />
+</div>
+{% endfor %}
+
+{% endblock %}

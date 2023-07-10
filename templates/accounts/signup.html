@@ -1,0 +1,10 @@
+{% extends '../base.html' %}
+{% block title %}signup画面{% endblock %}
+{% block content %}
+  <h2>Default SignUp</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">ユーザー登録</button>
+  </form>
+{% endblock %}
